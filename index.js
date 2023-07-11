@@ -10,6 +10,13 @@ import helmet from "helmet"
 import path from "path"
 import multer from 'multer';
 import { fileURLToPath } from 'url';
+
+import {createPost} from "./controller/posts.js"
+import postRoutes from "./routes/posts.js"
+import userRoutes from "./routes/users.js"
+import authRoutes from "./routes/auth.js"
+import { register } from "./controller/auth.js"
+import { verifyToken } from './middleware/auth.js';
 //CONFIGURATION
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -41,6 +48,15 @@ const storage = multer.diskStorage({
 });
 const upload = multer({  storage});
 
+
+// Routes with Files 
+app.post("/auth/register" , upload.single("picture"), register);
+app.post("/posts",verifyToken, upload.single("picture"),createPost);
+//Routes
+app.use("/auth", authRoutes);
+app.use("/user", userRoutes)
+app.use("/posts", postRoutes)
+
 mongoose.set('strictQuery', false);
 
 
@@ -52,7 +68,7 @@ const connectDB = async() =>{
         })
         console.log(`MongoDB connected: ${con.connection.host}`);
         
-    }catch(error){
+    }catch(error){ 
         console.log(error);
         process.exit(1);
 
