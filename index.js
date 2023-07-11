@@ -87,8 +87,8 @@ connectDB();
 app.listen(process.env.PORT, () =>{
     console.log(`Server is listening at http://localhost:${process.env.PORT}`);
     // Add this data only one time
-    User.insertMany(users);
-    Post.insertMany(posts);
+    // User.insertMany(users);
+    // Post.insertMany(posts);
 })
 
 
