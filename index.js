@@ -10,6 +10,9 @@ import helmet from "helmet"
 import path from "path"
 import multer from 'multer';
 import { fileURLToPath } from 'url';
+import User from "./models/User.js"
+import Post from "./models/Post.js";
+import { users , posts} from "./data/index.js"
 
 import {createPost} from "./controller/posts.js"
 import postRoutes from "./routes/posts.js"
@@ -83,6 +86,9 @@ connectDB();
 
 app.listen(process.env.PORT, () =>{
     console.log(`Server is listening at http://localhost:${process.env.PORT}`);
+    // Add this data only one time
+    User.insertMany(users);
+    Post.insertMany(posts);
 })
 
 
